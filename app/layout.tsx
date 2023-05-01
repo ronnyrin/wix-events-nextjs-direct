@@ -1,9 +1,11 @@
 import './globals.css';
+import React from 'react';
 import Footer from './components/Layout/Footer';
 import Header from './components/Layout/Header';
 import { ClientProvider } from './components/Provider/ClientProvider';
 import { SidebarUI } from './components/Sidebar/SidebarUI';
 import { NotPremium } from '@app/components/NotPremium/NotPremium';
+import { LoginModal } from '@app/components/LoginModal/LoginModal';
 
 export default function RootLayout({
   children,
@@ -27,6 +29,7 @@ export default function RootLayout({
           <main className="bg-site min-h-[600px]">{children}</main>
           <SidebarUI />
           <NotPremium />
+          <LoginModal />
         </ClientProvider>
         <div className="mt-10 sm:mt-20">
           <Footer />
