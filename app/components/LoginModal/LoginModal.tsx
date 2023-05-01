@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Button, Label, Modal, TextInput } from 'flowbite-react';
+import { Button, Label, Modal, Spinner, TextInput } from 'flowbite-react';
 import { useUI } from '@app/components/Provider/context';
 import { useWixClient } from '@app/hooks/useWixClient';
 import { WIX_MEMBER_TOKEN } from '@app/constants';
@@ -17,6 +17,7 @@ enum State {
 
 export const LoginModal = () => {
   const { closeModalLogin, displayLoginModal } = useUI();
+  const [loading, setLoading] = React.useState(false);
   const wixClient = useWixClient();
   const [email, setEmail] = React.useState('');
   const [code, setCode] = React.useState('');
@@ -34,6 +35,7 @@ export const LoginModal = () => {
   };
 
   const resetState = () => {
+    setLoading(false);
     setPending({ state: false, message: '' });
     setEmail('');
     setCode('');
@@ -48,6 +50,7 @@ export const LoginModal = () => {
   }, [state]);
 
   const submit = async () => {
+    setLoading(true);
     let response;
 
     if (state === State.RESET_PASSWORD) {
@@ -77,7 +80,10 @@ export const LoginModal = () => {
         expires: 2,
       });
       closeModal();
-    } else if (response.stateKind === 'ownerApprovalRequired') {
+      return;
+    }
+
+    if (response.stateKind === 'ownerApprovalRequired') {
       setPending({ message: 'Your account is pending approval', state: true });
     } else if (response.stateKind === 'emailVerificationRequired') {
       setState(State.EMAIL_VERIFICATION);
@@ -96,6 +102,7 @@ export const LoginModal = () => {
         });
       }
     }
+    setLoading(false);
   };
 
   const stateTitle =
@@ -239,10 +246,12 @@ export const LoginModal = () => {
                   <Button
                     onClick={submit}
                     disabled={
-                      !email || (!password && state !== State.RESET_PASSWORD)
+                      !email ||
+                      (!password && state !== State.RESET_PASSWORD) ||
+                      loading
                     }
                   >
-                    {stateSubmit}
+                    {loading ? <Spinner aria-label="Loading" /> : stateSubmit}
                   </Button>
                 </div>
                 {state !== State.RESET_PASSWORD &&
