@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, OAuthStrategy } from '@wix/api-client';
 import { cart } from '@wix/ecom';
-import { WIX_MEMBER_TOKEN, WIX_REFRESH_TOKEN } from '@app/constants';
+import { WIX_REFRESH_TOKEN } from '@app/constants';
 
 export async function middleware(request: NextRequest) {
   const cookies = request.cookies;
-  if (cookies.get(WIX_REFRESH_TOKEN) || cookies.get(WIX_MEMBER_TOKEN)) {
+  if (cookies.get(WIX_REFRESH_TOKEN)) {
     return NextResponse.next();
   }
   const res = NextResponse.next();
