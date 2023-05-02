@@ -8,7 +8,7 @@ import { useUI } from '@app/components/Provider/context';
 const LoginComp = () => {
   const { openModalLogin } = useUI();
   const wixClient = useWixClient();
-  const isLoggedIn = wixClient.auth.isLoggedIn();
+  const isLoggedIn = wixClient.auth.loggedIn();
   const onLoginClick = async () => {
     if (isLoggedIn) {
       Cookies.remove(WIX_REFRESH_TOKEN);
