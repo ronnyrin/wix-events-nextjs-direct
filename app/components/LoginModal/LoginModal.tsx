@@ -82,6 +82,7 @@ export const LoginModal = () => {
       Cookies.set(WIX_REFRESH_TOKEN, JSON.stringify(tokens.refreshToken), {
         expires: 2,
       });
+      wixClient.auth.setTokens(tokens);
       closeModal();
       return;
     }
