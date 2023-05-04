@@ -55,7 +55,7 @@ export const LoginModal = () => {
     let response;
 
     if (state === State.RESET_PASSWORD) {
-      await wixClient.auth.sendResetPasswordMail(email);
+      await wixClient.auth.sendResetPasswordMail(email, window.location.origin);
       setPending({ message: 'Password reset email sent', state: true });
       return;
     }
